@@ -6,7 +6,7 @@ name: jd_jx
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '5 16 * * *'
   watch:
     types: started
   repository_dispatch:
