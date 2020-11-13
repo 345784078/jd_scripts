@@ -34,7 +34,7 @@ jobs:
         uses: Yikun/hub-mirror-action@master
         if: env.dst_key
         with:
-          src: github/twogenchen
+          src: github/345784078
           dst: gitee/twogen
           static_list: "scripts"
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
