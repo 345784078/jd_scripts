@@ -1,7 +1,7 @@
 /*
 京东抽奖机
-更新时间：2020-11-11 09:24
-脚本说明：六个抽奖活动，【东东抽奖机】【新店福利】【东东福利屋】【东东生活】【闪购盲盒】【疯狂砸金蛋】，点通知只能跳转一个，入口在京东APP玩一玩里面可以看到
+更新时间：2020-11-15 15:08
+脚本说明：三个抽奖活动，【新店福利】【闪购盲盒】【疯狂砸金蛋】，点通知只能跳转一个，入口在京东APP玩一玩里面可以看到
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 // quantumultx
 [task_local]
@@ -19,9 +19,9 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const STRSPLIT = "|";
 const needSum = false;     //是否需要显示汇总
 const printDetail = false;        //是否显示出参详情
-const appIdArr = ['1EFRQxQ','1EFRQxA','1EFRQxw','1EFRQyw','1EFRRxA','1EFRQwA']
-const shareCodeArr = ['P04z54XCjVXmYaW5m9cZ2f433tIlGBj3JnLHD0','P04z54XCjVXmIaW5m9cZ2f433tIlGWEga-IO2o','P04z54XCjVXm4aW5m9cZ2f433tIlINrBDzgMdY','P04z54XCjVXl4aW5m9cZ2f433tIlHQIDDSzFzg','P04z54XCjVWmIaW5m9cZ2f433tIlJz4FjX2kfk','P04z54XCjVXnIaW5m9cZ2f433tIlLKXiUijZw4']
-//const funPrefixArr = ['interact_template','interact_template','wfh']
+const appIdArr = ['1EFRQxA','1EFRRxA','1EFRQwA']
+const shareCodeArr = ['P04z54XCjVXmIaW5m9cZ2f433tIlGWEga-IO2o','P04z54XCjVWmIaW5m9cZ2f433tIlJz4FjX2kfk','P04z54XCjVXnIaW5m9cZ2f433tIlLKXiUijZw4']
+const funPrefixArr = ['','','','','','']
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -54,10 +54,9 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
       for (let j in appIdArr) {
         appId = appIdArr[j]
         shareCode = shareCodeArr[j]
-        //funPrefix = funPrefixArr[j]
+        funPrefix = funPrefixArr[j]||'interact_template'
         if (parseInt(j)) console.log(`\n开始第${parseInt(j) + 1}个抽奖活动`)
         await interact_template_getHomeData();
-        await interact_template_getLotteryResult();
       }
       await msgShow();
     }
@@ -112,12 +111,18 @@ function interact_template_getHomeData(timeout = 0) {
           'Accept-Encoding' : `gzip, deflate, br`,
           'Accept-Language' : `zh-cn`
         },
-        body : `functionId=${appId === '1EFRQxw' ? 'wfh' :'interact_template'}_getHomeData&body={"appId":"${appId}","taskToken":""}&client=wh5&clientVersion=1.0.0`
+        body : `functionId=${funPrefix}_getHomeData&body={"appId":"${appId}","taskToken":""}&client=wh5&clientVersion=1.0.0`
       }
       $.post(url, async (err, resp, data) => {
         try {
           if (printDetail) console.log(data);
           data = JSON.parse(data);
+          if (data.data.bizCode !== 0) {
+            console.log(data.data.bizMsg);
+            merge.jdBeans.fail++;
+            merge.jdBeans.notify = `${data.data.bizMsg}`;
+            return
+          }
           scorePerLottery = data.data.result.userInfo.scorePerLottery||data.data.result.userInfo.lotteryMinusScore
           //console.log(scorePerLottery)
           for (let i = 0;i < data.data.result.taskVos.length;i ++) {
@@ -148,6 +153,7 @@ function interact_template_getHomeData(timeout = 0) {
               }
             }
           }
+          await interact_template_getLotteryResult();
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -174,7 +180,7 @@ function harmony_collectScore(taskToken,taskId,timeout = 0) {
           'Accept-Encoding' : `gzip, deflate, br`,
           'Accept-Language' : `zh-cn`
         },
-        body : `functionId=${appId === '1EFRQxw' ? 'wfh' :'harmony'}_collectScore&body={"appId":"${appId}","taskToken":"${taskToken}","taskId":${taskId},"actionType":0}&client=wh5&clientVersion=1.0.0`
+        body : `functionId=${funPrefix === 'interact_template' ? 'harmony' : funPrefix}_collectScore&body={"appId":"${appId}","taskToken":"${taskToken}","taskId":${taskId},"actionType":0}&client=wh5&clientVersion=1.0.0`
       }
       //console.log(url)
       $.post(url, async (err, resp, data) => {
@@ -207,7 +213,7 @@ function interact_template_getLotteryResult(timeout = 0) {
           'Accept-Encoding' : `gzip, deflate, br`,
           'Accept-Language' : `zh-cn`
         },
-        body : `functionId=${appId === '1EFRQxw' ? 'wfh' :'interact_template'}_getLotteryResult&body={"appId":"${appId}"}&client=wh5&clientVersion=1.0.0`
+        body : `functionId=${funPrefix}_getLotteryResult&body={"appId":"${appId}"}&client=wh5&clientVersion=1.0.0`
       }
       $.post(url, async (err, resp, data) => {
         try {
@@ -216,7 +222,7 @@ function interact_template_getLotteryResult(timeout = 0) {
           data = JSON.parse(data);
           if (data.data.bizCode === 0) {
             merge.jdBeans.success++;
-            if (data.data.result.userAwardsCacheDto.jBeanAwardVo&&data.data.result.userAwardsCacheDto.jBeanAwardVo.prizeName.match(/京豆/)) {
+            if (data.data.result.userAwardsCacheDto.jBeanAwardVo) {
               console.log('京豆:' + data.data.result.userAwardsCacheDto.jBeanAwardVo.quantity)
               merge.jdBeans.prizeCount += parseInt(data.data.result.userAwardsCacheDto.jBeanAwardVo.quantity)
             }
@@ -260,7 +266,7 @@ function initial() {
 //通知
 function msgShow() {
   let message = "";
-  let url ={ "open-url" : `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/2WBcKYkn8viyxv7MoKKgfzmu7Dss/index.html%22%20%7D`}
+  let url ={ "open-url" : `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/YgnrqBaEmVHWppzCgW8zjZj3VjV/index.html%22%20%7D`}
   let title = `京东账号：${merge.nickname}`;
   for (let i in merge) {
     if (typeof (merge[i]) !== "object" || !merge[i].show) continue;
