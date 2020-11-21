@@ -1,16 +1,19 @@
 /*
 京东京喜工厂
+活动入口 :京东APP->游戏与互动->查看更多->京喜工厂
+或者: 京东APP首页搜索 "玩一玩" ,造物工厂即可
+cron 15 * * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js
  */
 
 
 const $ = new Env('京喜工厂');
 const JD_API_HOST = 'https://m.jingxi.com';
 
-let ele, factoryId;
+let ele, factoryId, productionId;
 
 let message = '', subTitle = '', option = {};
 const notify = $.isNode() ? require('./sendNotify') : '';
-let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 
 let cookiesArr = [], cookie = '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -63,17 +66,11 @@ if ($.isNode()) {
     $.done();
   })
 
-function msleep(n) {
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
-}
-
-function sleep(n) {
-  msleep(n * 1000);
-}
 
 async function jdDreamFactory() {
   ele = 0;
   await userInfo();
+  if ($.unActive) return
   await getUserElectricity();
   await taskList();
   await investElectric();
@@ -85,9 +82,9 @@ async function jdDreamFactory() {
 
 
 // 收取发电机的电力
-function collectElectricity(factoryId = factoryId, help = false) {
+function collectElectricity(facId = factoryId, help = false) {
   return new Promise(async resolve => {
-    const url = `/dreamfactory/generator/CollectCurrentElectricity?zone=dream_factory&apptoken=&pgtimestamp=&phoneID=&factoryid=${factoryId}&doubleflag=1&sceneval=2&g_login_type=1`;
+    const url = `/dreamfactory/generator/CollectCurrentElectricity?zone=dream_factory&apptoken=&pgtimestamp=&phoneID=&factoryid=${facId}&doubleflag=1&sceneval=2&g_login_type=1`;
 
     $.get(taskurl(url), (err, resp, data) => {
       try {
@@ -178,7 +175,7 @@ function taskList() {
                 if (vo.completedTimes >= vo.targetTimes) {
                   console.log(`任务：${vo.description}可完成`)
                   await completeTask(vo.taskId, vo.taskName)
-                  sleep(1);
+                  await $.wait(1000);//延迟等待一秒
                 } else {
                   switch (vo.taskType) {
                     case 2: // 逛一逛任务
@@ -188,7 +185,7 @@ function taskList() {
                         console.log(`去做任务：${vo.taskName}`)
                         await doTask(vo.taskId)
                         await completeTask(vo.taskId, vo.taskName)
-                        sleep(1);
+                        await $.wait(1000);//延迟等待一秒
                       }
                       break
                     case 4: // 招工
@@ -404,7 +401,9 @@ function userInfo() {
           console.log(`生产进度：${(production.investedElectric / production.needElectric).toFixed(2) * 100}%`);
           message += `【生产进度】${((production.investedElectric / production.needElectric) * 100).toFixed(2)}%\n`;
         } else {
-          console.log('【提示】此账号京喜工厂活动未开始\n请手动去京东APP->游戏与互动->查看更多->京喜工厂 开启活动\n')
+          $.unActive = true;//标记是否开启了此活动
+          console.log('【提示】此账号京喜工厂活动未开始\n请手动去京东APP->游戏与互动->查看更多->京喜工厂 开启活动\n');
+          $.msg($.name, '', `【提示】此账号[${$.nickName}]京喜工厂活动未开始\n请手动去京东APP->游戏与互动->查看更多->京喜工厂 开启活动`);
         }
       }
       resolve()
