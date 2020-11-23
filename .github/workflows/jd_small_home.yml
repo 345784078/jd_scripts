@@ -1,16 +1,16 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: jd_woHome
+name: jd_small_home
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '3 16 * * *'
   watch:
     types: started
   repository_dispatch:
-    types: woHome
+    types: small_home
 jobs:
   build:
 
@@ -37,6 +37,6 @@ jobs:
           npm install
       - name: '运行 东东小窝'
         run: |
-          node jd_woHome.js
+          node jd_small_home.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
