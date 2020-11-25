@@ -6,7 +6,7 @@ name: jd_small_home
 on:
   workflow_dispatch:
   schedule:
-    - cron: '3 16 * * *'
+    - cron: '3 16,9 * * *'
   watch:
     types: started
   repository_dispatch:
