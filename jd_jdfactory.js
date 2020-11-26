@@ -122,7 +122,7 @@ async function algorithm() {
                 console.log(`\n已选商品：${name}`);
                 console.log(`当前已投入电量/所需电量：${useScore}/${totalScore}`);
                 console.log(`已选商品剩余量：${couponCount}`);
-                console.log(`当前蓄电池电量：${remainScore}`);
+                console.log(`当前总电量：${remainScore * 1 + useScore * 1}`);
                 console.log(`当前完成度：${((remainScore * 1 + useScore * 1)/(totalScore * 1)).toFixed(2) * 100}%\n`);
                 message += `京东账号${$.index} ${$.nickName}\n`;
                 message += `已选商品：${name}\n`;
@@ -436,6 +436,7 @@ function jdfactory_getProductList(flag) {
                   console.log(`${item.name.slice(-4)}         ${item.sellOut === 1 ? '已抢光':'可选'}      ${item.couponCount}`);
                   if (item.name.indexOf(wantProduct) > -1 && item.couponCount > 0 && item.sellOut === 0) {
                     await jdfactory_makeProduct(item.skuId);
+                    break
                   }
                 }
               }
