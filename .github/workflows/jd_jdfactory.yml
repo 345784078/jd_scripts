@@ -40,3 +40,4 @@ jobs:
           node jd_jdfactory.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          DDFACTORY_SHARECODES: ${{ secrets.DDFACTORY_SHARECODES }}
