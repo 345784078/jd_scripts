@@ -44,7 +44,7 @@ function Ten_Street_Beans()
               url:FinalUrl,
               headers:HeadersWithCookies
           }
-          $httpClient.get(FullPar,function(error,response,data)
+   /*       $httpClient.get(FullPar,function(error,response,data)
           {
               var StatusCode,JsonObj;
               JsonObj = JSON.parse(data);
@@ -63,7 +63,7 @@ function Ten_Street_Beans()
               {
                 $.msg("十元街领豆子-失败","您的Cookie信息可能已过期,请重新获取","Warning");
               }
-          })
+          }*/)
       }
       else
       {
