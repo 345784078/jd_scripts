@@ -41,3 +41,4 @@ jobs:
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           DDFACTORY_SHARECODES: ${{ secrets.DDFACTORY_SHARECODES }}
+          FACTORAY_WANTPRODUCT_NAME: ${{ secrets.FACTORAY_WANTPRODUCT_NAME }}
