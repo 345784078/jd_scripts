@@ -45,7 +45,7 @@ function Ten_Street_Beans()
               headers:HeadersWithCookies
           }
           
-        $httpClient.get(FullPar,function(error,response,data)
+        $.get(FullPar,function(error,response,data)
           {
               var StatusCode,JsonObj;
               JsonObj = JSON.parse(data);
