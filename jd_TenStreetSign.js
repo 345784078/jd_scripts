@@ -27,7 +27,7 @@ function Ten_Street_Beans()
     const Body = 'body={"activityId":"8d6845fe2e77425c82d5078d314d33c5"}';
     const Appid = 'appid=swat_miniprogram';
     const FinalUrl = encodeURI(`${TenStreetSignInUrl}${FunctionID}&${Body}&${Appid}`);
-    const Cookies = $persistentStore.read("Gen_Cookie_Key");
+    //const Cookies = $persistentStore.read("Gen_Cookie_Key");
     if (!getCookies()) return;
     for (let i = 0; i < $.cookieArr.length; i++) {
       const cookie = $.cookieArr[i];
