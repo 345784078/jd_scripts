@@ -1,7 +1,8 @@
 /*
 京东抽奖机
-更新时间：2020-11-20 21:25
+更新时间：2020-11-26 14:00
 脚本说明：四个抽奖活动，【新店福利】【闪购盲盒】【疯狂砸金蛋】【东东福利屋】，点通知只能跳转一个，入口在京东APP玩一玩里面可以看到
+        新增短期活动【开红包】
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 // quantumultx
 [task_local]
@@ -19,9 +20,9 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const STRSPLIT = "|";
 const needSum = false;     //是否需要显示汇总
 const printDetail = false;        //是否显示出参详情
-const appIdArr = ['1EFRQxA','1EFRRxA','1EFRQwA','1EFRQyg']
+const appIdArr = ['1EFRQxA','1EFRRxA','1EFRQwA','1EFRQyg','1EFRTww']
 const shareCodeArr = ['P04z54XCjVXmIaW5m9cZ2f433tIlGWEga-IO2o','P04z54XCjVWmIaW5m9cZ2f433tIlJz4FjX2kfk','P04z54XCjVXnIaW5m9cZ2f433tIlLKXiUijZw4','P04z54XCjVXloaW5m9cZ2f433tIlH_LzLLVOp8']
-const funPrefixArr = ['','','','wfh','','']
+const funPrefixArr = ['','','','wfh','splitHongbao']
 let merge = {}
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
@@ -145,7 +146,14 @@ function interact_template_getHomeData(timeout = 0) {
                 if (list[j].status === 1) {
                   //console.log(list[j].simpleRecordInfoVo||list[j].assistTaskDetailVo)
                   console.log("\n" + (list[j].title || list[j].shopName||list[j].skuName))
-                  await harmony_collectScore(list[j].taskToken,data.data.result.taskVos[i].taskId);
+                  //console.log(list[j].itemId)
+                  if (list[j].itemId) {
+                    await harmony_collectScore(list[j].taskToken,data.data.result.taskVos[i].taskId,list[j].itemId,1);
+                    await harmony_collectScore(list[j].taskToken,data.data.result.taskVos[i].taskId,list[j].itemId,0,6000);
+                    if (k === data.data.result.taskVos[i].maxTimes - 1) await interact_template_getLotteryResult(data.data.result.taskVos[i].taskId);
+                  } else {
+                    await harmony_collectScore(list[j].taskToken,data.data.result.taskVos[i].taskId)
+                  }
                   list[j].status = 2;
                   break;
                 } else {
@@ -153,8 +161,12 @@ function interact_template_getHomeData(timeout = 0) {
                 }
               }
             }
+            if (data.data.result.taskVos[i].status === 3) {
+              console.log('开始抽奖')
+              await interact_template_getLotteryResult(data.data.result.taskVos[i].taskId);
+            }
           }
-          await interact_template_getLotteryResult();
+          if (scorePerLottery) await interact_template_getLotteryResult();
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -166,7 +178,7 @@ function interact_template_getHomeData(timeout = 0) {
 }
 
 
-function harmony_collectScore(taskToken,taskId,timeout = 0) {
+function harmony_collectScore(taskToken,taskId,itemId = "",actionType = 0,timeout = 0) {
   return new Promise((resolve) => {
     setTimeout( ()=>{
       let url = {
@@ -181,9 +193,9 @@ function harmony_collectScore(taskToken,taskId,timeout = 0) {
           'Accept-Encoding' : `gzip, deflate, br`,
           'Accept-Language' : `zh-cn`
         },
-        body : `functionId=${funPrefix === 'interact_template' ? 'harmony' : funPrefix}_collectScore&body={"appId":"${appId}","taskToken":"${taskToken}","taskId":${taskId},"actionType":0}&client=wh5&clientVersion=1.0.0`
+        body : `functionId=${funPrefix === 'wfh' ?  funPrefix : 'harmony'}_collectScore&body={"appId":"${appId}","taskToken":"${taskToken}","taskId":${taskId}${itemId ? ',"itemId":"'+itemId+'"' : ''},"actionType":${actionType}&client=wh5&clientVersion=1.0.0`
       }
-      //console.log(url)
+      //console.log(url.body)
       $.post(url, async (err, resp, data) => {
         try {
           if (printDetail) console.log(data);
@@ -199,7 +211,7 @@ function harmony_collectScore(taskToken,taskId,timeout = 0) {
   })
 }
 //
-function interact_template_getLotteryResult(timeout = 0) {
+function interact_template_getLotteryResult(taskId,timeout = 0) {
   return new Promise((resolve) => {
     setTimeout( ()=>{
       let url = {
@@ -214,20 +226,28 @@ function interact_template_getLotteryResult(timeout = 0) {
           'Accept-Encoding' : `gzip, deflate, br`,
           'Accept-Language' : `zh-cn`
         },
-        body : `functionId=${funPrefix}_getLotteryResult&body={"appId":"${appId}"}&client=wh5&clientVersion=1.0.0`
+        body : `functionId=${funPrefix}_getLotteryResult&body={"appId":"${appId}"${taskId ? ',"taskId":"'+taskId+'"' : ''}}&client=wh5&clientVersion=1.0.0`
       }
+      //console.log(url.body)
       $.post(url, async (err, resp, data) => {
         try {
           if (printDetail) console.log(data);
           if (!timeout) console.log('\n开始抽奖')
           data = JSON.parse(data);
           if (data.data.bizCode === 0) {
-            merge.jdBeans.success++;
+
             if (data.data.result.userAwardsCacheDto.jBeanAwardVo) {
+              merge.jdBeans.success++;
               console.log('京豆:' + data.data.result.userAwardsCacheDto.jBeanAwardVo.quantity)
               merge.jdBeans.prizeCount += parseInt(data.data.result.userAwardsCacheDto.jBeanAwardVo.quantity)
             }
-            if (parseInt(data.data.result.userScore) >= scorePerLottery ) {
+            if (data.data.result.userAwardsCacheDto.redPacketVO) {
+              merge.redPacket.show = true;
+              merge.redPacket.success++;
+              console.log('红包:' + data.data.result.userAwardsCacheDto.redPacketVO.value)
+              merge.redPacket.prizeCount += parseFloat(data.data.result.userAwardsCacheDto.redPacketVO.value)
+            }
+            if (parseInt(data.data.result.userScore) >= scorePerLottery && scorePerLottery) {
               await interact_template_getLotteryResult(1000)
             }
           } else{
@@ -251,10 +271,10 @@ function interact_template_getLotteryResult(timeout = 0) {
 
 function initial() {
    merge = {
-    nickname: "",
-    enabled: true,
-    //blueCoin: {prizeDesc : "收取|蓝币|个",number : true},  //定义 动作|奖励名称|奖励单位   是否是数字
-    jdBeans: {prizeDesc : "抽得|京豆|个",number : true,fixed : 0}
+     nickname: "",
+     enabled: true,
+     redPacket: {prizeDesc : "抽得|红包|元",number : true,fixed : 2},  //定义 动作|奖励名称|奖励单位   是否是数字
+     jdBeans: {prizeDesc : "抽得|京豆|个",number : true,fixed : 0}
   }
   for (let i in merge) {
     merge[i].success = 0;
@@ -263,12 +283,12 @@ function initial() {
     merge[i].notify = "";
     merge[i].show = true;
   }
-  //merge.jdBeans.show =Boolean(coinToBeans);
+  merge.redPacket.show = false;
 }
 //通知
 function msgShow() {
-  let message = "";
-  let url ={ "open-url" : `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/YgnrqBaEmVHWppzCgW8zjZj3VjV/index.html%22%20%7D`}
+  let message = "";//https://h5.m.jd.com/babelDiy/Zeus/YgnrqBaEmVHWppzCgW8zjZj3VjV/index.html
+  let url ={ "open-url" : `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://bunearth.m.jd.com/babelDiy/Zeus/3SQzMXqZu9xYoWyySoQb3847Cgs4/index.html%22%20%7D`}
   let title = `京东账号：${merge.nickname}`;
   for (let i in merge) {
     if (typeof (merge[i]) !== "object" || !merge[i].show) continue;
