@@ -27,7 +27,7 @@ function Ten_Street_Beans()
     const Body = 'body={"activityId":"8d6845fe2e77425c82d5078d314d33c5"}';
     const Appid = 'appid=swat_miniprogram';
     const FinalUrl = encodeURI(`${TenStreetSignInUrl}${FunctionID}&${Body}&${Appid}`);
-    //const Cookies = $persistentStore.read("Gen_Cookie_Key");
+    const Cookies = $persistentStore.read("Gen_Cookie_Key");
     if (!getCookies()) return;
     for (let i = 0; i < $.cookieArr.length; i++) {
       const cookie = $.cookieArr[i];
@@ -44,7 +44,7 @@ function Ten_Street_Beans()
               url:FinalUrl,
               headers:HeadersWithCookies
           }
-          //$httpClient.get(FullPar,function(error,response,data)
+          $httpClient.get(FullPar,function(error,response,data)
           {
               var StatusCode,JsonObj;
               JsonObj = JSON.parse(data);
@@ -57,19 +57,19 @@ function Ten_Street_Beans()
               }
               else if(StatusCode==81)
               {
-                $.msg("十元街领豆子-提示","","请勿重复签到");
+                  $.msg("十元街领豆子-提示","","请勿重复签到");
               }
               else
               {
                 $.msg("十元街领豆子-失败","您的Cookie信息可能已过期,请重新获取","Warning");
               }
-          }
+          })
       }
       else
       {
-        $.msg("十元街领豆子-错误","请先获取您的京东Cookie再试","");
+          $.msg("十元街领豆子-错误","请先获取您的京东Cookie再试","");
       }
-    }  
+    }
 }
 Ten_Street_Beans()
 
