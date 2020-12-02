@@ -4,9 +4,7 @@
 京东排行榜
 更新时间：2020-12-02 6:07
 脚本说明：京喜金牌厂长
-
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
- */
+*/
 const $ = new Env('金牌厂长');
 main();
 async function main() {
