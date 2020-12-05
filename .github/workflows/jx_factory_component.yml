@@ -6,7 +6,7 @@ name: jx_factory_component
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2 14,21 * * *'
+    - cron: '2 0,12 * * *'
   watch:
     types: started
   repository_dispatch:
