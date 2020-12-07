@@ -6,7 +6,7 @@ name: jd_split
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 * * * *'
+    - cron: '10 19 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -37,7 +37,7 @@ jobs:
           npm install
       - name: '运行 年终奖'
         run: |
-          node jd_split.js
+          node jd_split1.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JDSPLIT_SHARECODES: ${{ secrets.JDSPLIT_SHARECODES }}
