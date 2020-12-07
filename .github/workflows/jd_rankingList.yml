@@ -6,11 +6,11 @@ name: jd_rankingList
 on:
   workflow_dispatch:
   schedule:
-    - cron: '11 18 * * *'
+    - cron: '11 18,4 * * *'
   watch:
     types: started
   repository_dispatch:
-    types: jd_rankingList
+    types: jx_nc
 jobs:
   build:
 
@@ -35,9 +35,9 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京东排行榜】'
+      - name: '运行 【京喜农场】'
         run: |
-          node jd_rankingList.js
+          node jx_nc.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
