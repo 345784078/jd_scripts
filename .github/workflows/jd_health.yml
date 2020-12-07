@@ -37,10 +37,10 @@ jobs:
           npm install
       - name: '运行 健康'
         run: |
-          node jd_health.js
+          node jd_health1.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JDSPLIT_SHARECODES: ${{ secrets.JDSPLIT_SHARECODES }}
+          #JDSPLIT_SHARECODES: ${{ secrets.JDSPLIT_SHARECODES }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
