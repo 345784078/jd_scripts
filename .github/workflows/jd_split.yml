@@ -40,7 +40,7 @@ jobs:
           node jd_split.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          #DREAM_FACTORY_SHARE_CODES: ${{ secrets.DREAM_FACTORY_SHARE_CODES }}
+          JDSPLIT_SHARECODES: ${{ secrets.JDSPLIT_SHARECODES }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
