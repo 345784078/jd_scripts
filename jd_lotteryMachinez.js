@@ -19,7 +19,7 @@ cron "11 1 * * *" script-path=https://raw.githubusercontent.com/yangtingxiao/Qua
 const $ = new Env('京东抽奖机');
 main();
 async function main() {
-  $.http.get({url: `https://purge.jsdelivr.net/gh/yangtingxiao/QuantumultX@master/scripts/jd/jd_lotteryMachine.js`}).then((resp) => {
+  $.http.get({url: `https://purge.jsdelivr.net/gh/345784078/jd_scripts/master/jd_lotteryMachine1.js`}).then((resp) => {
     if (resp.statusCode === 200) {
       console.log(`${$.name}CDN缓存刷新成功`)
     }
