@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: jjx_cfd
+    types: jx_cfd
 jobs:
   build:
 
