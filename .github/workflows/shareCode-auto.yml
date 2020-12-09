@@ -6,7 +6,7 @@ name: shareCode-auto
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2 16,19 * * *'
+    - cron: '2 19 10,20,30 * *'
   watch:
     types: started
   repository_dispatch:
