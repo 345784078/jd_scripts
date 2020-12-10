@@ -693,14 +693,14 @@ function login(userName) {
     })
   })
 }
-function updateInviteCode(url = 'https://raw.githubusercontent.com/lxk0301/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
+function updateInviteCode(url = 'https://raw.githubusercontent.com/345784078/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
         } else {
-          $.inviteCodes = JSON.parse({"inviteCode":["1336713724823384066","1336713847206629378"]});
+          $.inviteCodes = JSON.parse(data);
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -710,7 +710,7 @@ function updateInviteCode(url = 'https://raw.githubusercontent.com/lxk0301/updat
     })
   })
 }
-function updateInviteCodeCDN(url = 'https://raw.fastgit.org/lxk0301/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
+function updateInviteCodeCDN(url = 'https://raw.fastgit.org/345784078/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -718,7 +718,7 @@ function updateInviteCodeCDN(url = 'https://raw.fastgit.org/lxk0301/updateTeam/m
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          $.inviteCodes = JSON.parse({"inviteCode":["1336713724823384066","1336713847206629378"]});
+          $.inviteCodes = JSON.parse(data);
         }
       } catch (e) {
         $.logErr(e, resp)
