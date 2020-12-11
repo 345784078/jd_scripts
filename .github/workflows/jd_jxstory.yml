@@ -37,7 +37,7 @@ jobs:
           npm install
       - name: '运行 【京喜金牌厂长】'
         run: |
-          node jd_jxstory.js
+          node jd_jxstory1.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
