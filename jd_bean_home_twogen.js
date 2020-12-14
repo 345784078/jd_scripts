@@ -135,6 +135,7 @@ function getAuthorShareCode() {
     })
   })
 }
+//改成助力自己
 function getAuthorShareCode2() {
   return new Promise(resolve => {
     $.get({url: "https://raw.githubusercontent.com/345784078/updateTeam/master/jd_updateBeanHome.json",headers:{
