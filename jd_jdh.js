@@ -69,7 +69,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     }
   }
   // 帮助作者，把作者助力码放到用户助力码之后
-  await getAuthorShareCode('https://gitee.com/shylocks/updateTeam/raw/main/jd_jdh.json');
+  await getAuthorShareCode('https://raw.githubusercontent.com/345784078/updateTeam/master/jd_jdh.json');
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
