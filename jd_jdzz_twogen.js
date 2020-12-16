@@ -1,5 +1,6 @@
 /*
 京东赚赚
+可以做随机互助
 活动入口：京东赚赚小程序
 长期活动，每日收益2毛左右，多号互助会较多
 已支持IOS双京东账号,Node.js支持N个京东账号
@@ -7,7 +8,7 @@
 ============Quantumultx===============
 [task_local]
 # 京东赚赚
-0 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdzz.js, tag=京东赚赚, enabled=true
+0 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true
 
 ================Loon==============
 [Script]
@@ -43,12 +44,13 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [
-  `ATGEC3-fsrn13aiaEqiM`,
-  `ATGEC3-fsrn13aiaEqiM`
+  `ATGEC3-fsrn13aiaEqiM@AUWE5maSSnzFeDmH4iH0elA@ATGEC3-fsrn13aiaEqiM@AUWE5m6WUmDdZC2mr1XhJlQ@AUWE5m_jEzjJZDTKr3nwfkg@A06fNSRc4GIqY38pMBeLKQE2InZA@AUWE5mf7ExDZdDmH7j3wfkA`,
+  `ATGEC3-fsrn13aiaEqiM@AUWE5maSSnzFeDmH4iH0elA@ATGEC3-fsrn13aiaEqiM@AUWE5m6WUmDdZC2mr1XhJlQ@AUWE5m_jEzjJZDTKr3nwfkg@A06fNSRc4GIqY38pMBeLKQE2InZA`
 ]
 !(async () => {
   $.tuanList = []
   await requireConfig();
+  //if (helpAuthor) await getAuthorShareCode('https://gitee.com/shylocks/updateTeam/raw/main/jd_zz.json');
   if (helpAuthor) await getAuthorShareCode('https://raw.githubusercontent.com/345784078/updateTeam/master/jd_zz.json');
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
@@ -126,12 +128,15 @@ async function jdWish() {
   await showMsg();
 }
 
-async function showMsg() {
-  message += `本次获得${parseInt($.totalBeanNum) - $.nowBean}京豆，${parseInt($.totalNum) - $.nowNum}金币\n`
-  message += `累计获得${$.totalBeanNum}京豆，${$.totalNum}金币\n`
-  $.msg($.name, '', `京东账号${$.index} ${$.nickName}\n${message}`);
-  // 云端大于10元无门槛红包时进行通知推送
-  if ($.isNode() && $.totalScore >= 10000) await notify.sendNotify(`${$.name} - 京东账号${$.index} - ${$.nickName}`, `京东账号${$.index} ${$.nickName}\n当前金币：${$.totalScore}个\n可兑换无门槛红包：${parseInt($.totalNum) / 1000}元\n`,)
+function showMsg() {
+  return new Promise(async resolve => {
+    message += `本次获得${parseInt($.totalBeanNum) - $.nowBean}京豆，${parseInt($.totalNum) - $.nowNum}金币\n`
+    message += `累计获得${$.totalBeanNum}京豆，${$.totalNum}金币\n`
+    $.msg($.name, '', `京东账号${$.index} ${$.nickName}\n${message}`);
+    // 云端大于10元无门槛红包时进行通知推送
+    if ($.isNode() && $.totalScore >= 10000) await notify.sendNotify(`${$.name} - 京东账号${$.index} - ${$.nickName}`, `京东账号${$.index} ${$.nickName}\n当前金币：${$.totalScore}个\n可兑换无门槛红包：${parseInt($.totalNum) / 1000}元\n`,)
+    resolve();
+  })
 }
 function getAuthorShareCode(url) {
   return new Promise(resolve => {
@@ -249,7 +254,7 @@ function getUserInfo() {
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data.data.shareTaskRes)
-              console.log(`您的好友助力码为${data.data.shareTaskRes.itemId}`)
+              console.log(`您的${$.name}好友助力码为${data.data.shareTaskRes.itemId}`)
           }
         }
       } catch (e) {
