@@ -35,7 +35,7 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京豆健康】'
+      - name: '运行 【京东健康】'
         run: |
           node jd_jdh_twogen.js
         env:
