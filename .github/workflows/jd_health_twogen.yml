@@ -35,7 +35,7 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 健康'
+      - name: '运行 健康抽奖机'
         run: |
           node jd_health_twogen.js
         env:
