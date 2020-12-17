@@ -20,7 +20,7 @@ const STRSPLIT = "|";
 const needSum = false;     //是否需要显示汇总
 const printDetail = false;        //是否显示出参详情
 const appIdArr = ['1EFRQxA','1EFRRxA','1EFRQwA','1EFRTwg','1EFRTyg']//'1EFRQyg'//'1EFRTwA','P04z54XCjVXloaW5m9cZ2f433tIlH_LzLLVOp8','P04z54XCjVUnIaW5m9cZ2f433tIlJeCjGuzPCI'//,'1EFRTxw'
-const shareCodeArr = ['P04z54XCjVXmIaW5nFPVzetgw','P04z54XCjVUloaW5nJcYhaihgks9kK2upAq']//'P04z54XCjVUm4aW5m9cZ2f433tIlID9Pfij_eg'
+const shareCodeArr = ['P04z54XCjVXmIaW5m9cZ2f433tIlGWEga-IO2o','P04z54XCjVWmIaW5m9cZ2f433tIlJz4FjX2kfk','P04z54XCjVXnIaW5m9cZ2f433tIlLKXiUijZw4','P04z54XCjVUnoaW5m9cZ2f433tIlIcU3mmrus8','P04z54XCjVUloaW5m9cZ2f433tIlNDtvQURO58']//'P04z54XCjVUm4aW5m9cZ2f433tIlID9Pfij_eg'
 const homeDataFunPrefixArr = ['','','','healthyDay','healthyDay']//,
 const collectScoreFunPrefixArr = ['','','','','']
 const lotteryResultFunPrefixArr = ['','','','interact_template','interact_template']
@@ -64,6 +64,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
         lotteryResultFunPrefix = lotteryResultFunPrefixArr[j]||homeDataFunPrefix
         browseTime = browseTimeArr[j]||6
         if (parseInt(j)) console.log(`\n开始第${parseInt(j) + 1}个抽奖活动`)
+        await jdhealth_getTaskDetail();
         await interact_template_getHomeData();
         //break
       }
@@ -73,6 +74,38 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done())
+
+function jdhealth_getTaskDetail(get=1) {
+  return new Promise(resolve => {
+    $.post(taskPostUrl("healthyDay_getHomeData", {"appId":"1EFRQxA","taskToken":""}, ), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data);
+            if (data.data.bizCode === 0) {
+              $.taskVos = data.data.result.taskVos;//任务列表
+              $.userInfo = data.data.result.userInfo;
+              if(get)
+                $.taskVos.map(item => {
+                  if (item.taskType === 14) {
+                    console.log(`\n您的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`)
+                    message += `\n您的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`
+                  }
+                })
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
 
 
 //获取昵称
@@ -133,7 +166,7 @@ function interact_template_getHomeData(timeout = 0) {
             return
           }
           scorePerLottery = data.data.result.userInfo.scorePerLottery||data.data.result.userInfo.lotteryMinusScore
-          console.log(scorePerLottery)
+          //console.log(scorePerLottery)
           for (let i = 0;i < data.data.result.taskVos.length;i ++) {
             console.log("\n" + data.data.result.taskVos[i].taskType + '-' + data.data.result.taskVos[i].taskName  + '-' + (data.data.result.taskVos[i].status === 1 ? `已完成${data.data.result.taskVos[i].times}-未完成${data.data.result.taskVos[i].maxTimes}` : "全部已完成"))
             //签到
@@ -149,7 +182,7 @@ function interact_template_getHomeData(timeout = 0) {
               continue
             }
             if ([14,6].includes(data.data.result.taskVos[i].taskType)) {//'data.data.result.taskVos[i].assistTaskDetailVo.taskToken'
-              console.log(data.data.result.taskVos[i].assistTaskDetailVo.taskToken)
+              //console.log(data.data.result.taskVos[i].assistTaskDetailVo.taskToken)
               await harmony_collectScore(shareCode,data.data.result.taskVos[i].taskId);
               for (let j = 0;j <(data.data.result.userInfo.lotteryNum||0);j++) {
                 await interact_template_getLotteryResult(data.data.result.taskVos[i].taskId);
@@ -160,9 +193,9 @@ function interact_template_getHomeData(timeout = 0) {
             for (let k = data.data.result.taskVos[i].times; k < data.data.result.taskVos[i].maxTimes; k++) {
               for (let j in list) {
                 if (list[j].status === 1) {
-                  console.log(list[j].simpleRecordInfoVo||list[j].assistTaskDetailVo)
+                  //console.log(list[j].simpleRecordInfoVo||list[j].assistTaskDetailVo)
                   console.log("\n" + (list[j].title || list[j].shopName||list[j].skuName))
-                  console.log(list[j].itemId)
+                  //console.log(list[j].itemId)
                   if (list[j].itemId) {
                     await harmony_collectScore(list[j].taskToken,data.data.result.taskVos[i].taskId,list[j].itemId,1);
                     await harmony_collectScore(list[j].taskToken,data.data.result.taskVos[i].taskId,list[j].itemId,0,parseInt(browseTime) * 1000);
@@ -207,7 +240,7 @@ function harmony_collectScore(taskToken,taskId,itemId = "",actionType = 0,timeou
         },
         body : `functionId=${collectScoreFunPrefix}_collectScore&body={"appId":"${appId}","taskToken":"${taskToken}","taskId":${taskId}${itemId ? ',"itemId":"'+itemId+'"' : ''},"actionType":${actionType}&client=wh5&clientVersion=1.0.0`
       }
-      console.log(url.body)
+      //console.log(url.body)
       $.post(url, async (err, resp, data) => {
         try {
           if (printDetail) console.log(data);
@@ -240,7 +273,7 @@ function interact_template_getLotteryResult(taskId,timeout = 0) {
         },
         body : `functionId=${lotteryResultFunPrefix}_getLotteryResult&body={"appId":"${appId}"${taskId ? ',"taskId":"'+taskId+'"' : ''}}&client=wh5&clientVersion=1.0.0`
       }
-      console.log(url.body)
+      //console.log(url.body)
       $.post(url, async (err, resp, data) => {
         try {
           if (printDetail) console.log(data);
