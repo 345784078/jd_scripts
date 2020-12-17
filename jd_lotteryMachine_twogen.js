@@ -91,8 +91,8 @@ function jdhealth_getTaskDetail(get=1) {
               if(get)
                 $.taskVos.map(item => {
                   if (item.taskType === 14) {
-                    console.log(`\n您的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`)
-                    message += `\n您的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`
+                    console.log(`\n我自己的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`)
+                    message += `\n我自己的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`
                   }
                 })
             }
