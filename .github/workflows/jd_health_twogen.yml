@@ -6,7 +6,7 @@ name: jd_health_twogen
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2 17,19 * * *'
+    - cron: '22 16,21 * * *'
   watch:
     types: started
   repository_dispatch:
