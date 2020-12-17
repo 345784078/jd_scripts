@@ -107,6 +107,23 @@ function jdhealth_getTaskDetail(get=1) {
   })
 }
 
+function taskPostUrl(function_id, body = {}, function_id2) {
+  let url = `${JD_API_HOST}`;
+  if (function_id2) {
+    url += `?functionId=${function_id2}`;
+  }
+  return {
+    url,
+    body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=9.1.0`,
+    headers: {
+      "Cookie": cookie,
+      "origin": "https://h5.m.jd.com",
+      "referer": "https://h5.m.jd.com/",
+      'Content-Type': 'application/x-www-form-urlencoded',
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
+    }
+  }
+}
 
 //获取昵称
 function QueryJDUserInfo(timeout = 0) {
