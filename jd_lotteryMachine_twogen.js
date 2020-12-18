@@ -124,6 +124,17 @@ function taskPostUrl(function_id, body = {}, function_id2) {
     }
   }
 }
+function safeGet(data) {
+  try {
+    if (typeof JSON.parse(data) == "object") {
+      return true;
+    }
+  } catch (e) {
+    console.log(e);
+    console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
+    return false;
+  }
+}
 
 //获取昵称
 function QueryJDUserInfo(timeout = 0) {
