@@ -64,7 +64,6 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
         lotteryResultFunPrefix = lotteryResultFunPrefixArr[j]||homeDataFunPrefix
         browseTime = browseTimeArr[j]||6
         if (parseInt(j)) console.log(`\n开始第${parseInt(j) + 1}个抽奖活动`)
-        await jdhealth_getTaskDetail();
         await interact_template_getHomeData();
         //break
       }
@@ -75,66 +74,6 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
   .catch((e) => $.logErr(e))
   .finally(() => $.done())
 
-function jdhealth_getTaskDetail(get=1) {
-  return new Promise(resolve => {
-    $.post(taskPostUrl("healthyDay_getHomeData", {"appId":"1EFRQxA","taskToken":""}, ), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data.data.bizCode === 0) {
-              $.taskVos = data.data.result.taskVos;//任务列表
-              $.userInfo = data.data.result.userInfo;
-              if(get)
-                $.taskVos.map(item => {
-                  if (item.taskType === 14) {
-                    console.log(`\n我自己的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`)
-                    message += `\n我自己的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`
-                  }
-                })
-            }
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-  })
-}
-
-function taskPostUrl(function_id, body = {}, function_id2) {
-  let url = `${JD_API_HOST}`;
-  if (function_id2) {
-    url += `?functionId=${function_id2}`;
-  }
-  return {
-    url,
-    body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=9.1.0`,
-    headers: {
-      "Cookie": cookie,
-      "origin": "https://h5.m.jd.com",
-      "referer": "https://h5.m.jd.com/",
-      'Content-Type': 'application/x-www-form-urlencoded',
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0") : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.2.2;14.2;%E4%BA%AC%E4%B8%9C/9.2.2 CFNetwork/1206 Darwin/20.1.0"),
-    }
-  }
-}
-function safeGet(data) {
-  try {
-    if (typeof JSON.parse(data) == "object") {
-      return true;
-    }
-  } catch (e) {
-    console.log(e);
-    console.log(`京东服务器访问数据为空，请检查自身设备网络情况`);
-    return false;
-  }
-}
 
 //获取昵称
 function QueryJDUserInfo(timeout = 0) {
