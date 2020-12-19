@@ -148,8 +148,8 @@ function interact_template_getHomeData(timeout = 0) {
               }
               continue
             }
-            if ([14,6].includes(data.data.result.taskVos[i].taskType)) {//'data.data.result.taskVos[i].assistTaskDetailVo.taskToken'
-              //console.log(data.data.result.taskVos[i].assistTaskDetailVo.taskToken)
+            if ([14,6].includes(data.data.result.taskVos[i].taskType)) {'data.data.result.taskVos[i].assistTaskDetailVo.taskToken'
+              console.log(data.data.result.taskVos[i].assistTaskDetailVo.taskToken)
               await harmony_collectScore(shareCode,data.data.result.taskVos[i].taskId);
               for (let j = 0;j <(data.data.result.userInfo.lotteryNum||0);j++) {
                 await interact_template_getLotteryResult(data.data.result.taskVos[i].taskId);
