@@ -57,9 +57,9 @@ const shareCodes = [
         jxgc: $.getdata("jx_shareCode7") || "VFnVfYoknvTanuxr_Dsizw==",
     },
     {
-        zd: $.getdata("zd_shareCode8") || "7lhibzb3zek3mgg62vemym7tvpg6p4jii4xoni",
+        zd: $.getdata("zd_shareCode8") || "e7lhibzb3zek3mgg62vemym7tvpg6p4jii4xoni",
         nc: $.getdata("nc_shareCode8") || "63452ae3da004f95bd82af04ac84f165",
-        mc: $.getdata("mc_shareCode8") || "MTE1NDUyMjEwMDAwMDAwNDI3NjMzODU===",
+        mc: $.getdata("mc_shareCode8") || "MTE1NDUyMjEwMDAwMDAwNDI3NjMzODU=",
         ddgc: $.getdata("dd_shareCode8") || "P04z54XCjVWnYaS5m9cZ2StjChNnOdh5wHloEs",
         jxgc: $.getdata("jx_shareCode8") || "OtsmlozqNaT-1tmEWBdIjQ==",
     },
