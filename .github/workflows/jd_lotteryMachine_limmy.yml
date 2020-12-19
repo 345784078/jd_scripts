@@ -6,7 +6,7 @@ name: jd_lotteryMachine_limmy
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 20 * * *'
+    - cron: '40 20 * * *'
   watch:
     types: started
   repository_dispatch:
