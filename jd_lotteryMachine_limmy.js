@@ -1,6 +1,6 @@
 /*
 京东抽奖机
-更新时间：2020-12-22 14:34
+更新时间：2020-12-22 16:28
 脚本说明：抽奖活动，【新店福利】【闪购盲盒】【疯狂砸金蛋】【健康服务】【砸蛋抽好礼】，点通知只能跳转一个，入口在京东APP玩一玩里面可以看到
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 // quantumultx
@@ -20,8 +20,8 @@ const STRSPLIT = "|";
 const needSum = false;            //是否需要显示汇总
 const printDetail = false;        //是否显示出参详情
 const appIdArr = ['1EFRRxA','1EFRQwA','1EFRTwg','1EFRTyg','1EFRSxw','1EFRTxQ']
-//const shareCodeArr = ['T008-rosF0tHCjVWmIaW5kRrbA','T008-rosF0tHCjVXnIaW5kRrbA','T008-rosF0tHCjVUnoaW5kRrbA','T008-rosF0tHCjVUloaW5kRrbA','T008-rosF0tHCjVVm4aW5kRrbA','T008-rosF0tHCjVUmYaW5kRrbA']
 const shareCodeArr = ['T0104qQuGR0f9gCjVWmIaW5kRrbA','T0104qQuGR0f9gCjVXnIaW5kRrbA','T0104qQuGR0f9gCjVUnoaW5kRrbA','T0104qQuGR0f9gCjVUloaW5kRrbA','T0104qQuGR0f9gCjVVm4aW5kRrbA','T0104qQuGR0f9gCjVUmYaW5kRrbA']
+//const shareCodeArr = ['P04z54XCjVWmIaW5m9cZ2f433tIlJz4FjX2kfk','P04z54XCjVXnIaW5m9cZ2f433tIlLKXiUijZw4','P04z54XCjVUnoaW5m9cZ2f433tIlIcU3mmrus8','P04z54XCjVUloaW5m9cZ2f433tIlNDtvQURO58','P04z54XCjVVm4aW5m9cZ2f433tIlARS0JQxxfc','T0225KkcRx4b8lbWJU72wvZZcwCjVUmYaW5kRrbA']
 const homeDataFunPrefixArr = ['','','healthyDay','healthyDay','healthyDay','ts']
 const collectScoreFunPrefixArr = ['','','','','']
 const lotteryResultFunPrefixArr = ['','','interact_template','interact_template','interact_template','ts']
@@ -134,7 +134,7 @@ function interact_template_getHomeData(timeout = 0) {
             return
           }
           scorePerLottery = data.data.result.userInfo.scorePerLottery||data.data.result.userInfo.lotteryMinusScore
-          if (data.data.result.raiseInfo) scorePerLottery = data.data.result.raiseInfo.levelList[data.data.result.raiseInfo.scoreLevel];
+          if (data.data.result.raiseInfo&&data.data.result.raiseInfo.levelList) scorePerLottery = data.data.result.raiseInfo.levelList[data.data.result.raiseInfo.scoreLevel];
           //console.log(scorePerLottery)
           for (let i = 0;i < data.data.result.taskVos.length;i ++) {
             console.log("\n" + data.data.result.taskVos[i].taskType + '-' + data.data.result.taskVos[i].taskName  + '-' + (data.data.result.taskVos[i].status === 1 ? `已完成${data.data.result.taskVos[i].times}-未完成${data.data.result.taskVos[i].maxTimes}` : "全部已完成"))
