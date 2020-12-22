@@ -20,14 +20,14 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const STRSPLIT = "|";
 const needSum = false;     //是否需要显示汇总
 const printDetail = false;        //是否显示出参详情
-const appIdArr = ['1EFRRxA','1EFRQwA','1EFRTwg','1EFRTyg','1EFRSxw']//'1EFRQyg'//'1EFRTwA','P04z54XCjVXloaW5m9cZ2f433tIlH_LzLLVOp8','P04z54XCjVUnIaW5m9cZ2f433tIlJeCjGuzPCI'//,'1EFRTxw'
+const appIdArr = ['1EFRQxA','1EFRRxA','1EFRQwA','1EFRTwg','1EFRTyg','1EFRSwA']//'1EFRQyg'//'1EFRTwA','P04z54XCjVXloaW5m9cZ2f433tIlH_LzLLVOp8','P04z54XCjVUnIaW5m9cZ2f433tIlJeCjGuzPCI'//,'1EFRTxw'
 //const shareCodeArr = ['P04z54XCjVXmIaW5m9cZ2f433tIlGWEga-IO2o','P04z54XCjVWmIaW5m9cZ2f433tIlJz4FjX2kfk','P04z54XCjVXnIaW5m9cZ2f433tIlLKXiUijZw4','P04z54XCjVUnoaW5m9cZ2f433tIlIcU3mmrus8','P04z54XCjVUloaW5m9cZ2f433tIlNDtvQURO58','P04z54XCjVVnIaW5m9cZ2f433tIlNDt16wa89Q']//'P04z54XCjVUm4aW5m9cZ2f433tIlID9Pfij_eg'
-//const shareCodeArr = ['P04z54XCjVUnoaW5nJcYhaihgks9uUmxpk6','P04z54XCjVWmIaW5mlRVTn7238','P04z54XCjVXnIaW5mlRVTn7238','P04z54XCjVUnoaW5mlRVTn7238','P04z54XCjVUloaW5mlRVTn7238','P04z54XCjVVnIaW5mlRVTn7238']
-const shareCodeArr = ['P04z54XCjVWmIaW5nFPVzetgw','P04z54XCjVXnIaW5nFPVzetgw','P04z54XCjVUnoaW5nFPVzetgw','P04z54XCjVUloaW5nFPVzetgw','04z54XCjVVnIaW5nFPVzetgw']
-const homeDataFunPrefixArr = ['','','healthyDay','healthyDay','healthyDay','ts']
+const shareCodeArr = ['P04z54XCjVUnoaW5nJcYhaihgks9uUmxpk6','T008-rosF0tHCjVWmIaW5kRrbA','T008-rosF0tHCjVXnIaW5kRrbA','T008-rosF0tHCjVUnoaW5kRrbA','T008-rosF0tHCjVUloaW5kRrbA','P04z54XCjVVnIaW5mlRVTn7238']
+//const shareCodeArr = ['P04z54XCjVUnoaW5nJcYhaihgks9uUmxpk6','P04z54XCjVWmIaW5nFPVzetgw','P04z54XCjVXnIaW5nFPVzetgw','P04z54XCjVUnoaW5nFPVzetgw','P04z54XCjVUloaW5nFPVzetgw',’P04z54XCjVVnIaW5nFPVzetgw’]
+const homeDataFunPrefixArr = ['','','','healthyDay','healthyDay','healthyDay']//,
 const collectScoreFunPrefixArr = ['','','','','']
-const lotteryResultFunPrefixArr = ['','','interact_template','interact_template','interact_template','ts']
-const browseTimeArr = ['','','15','','6','']
+const lotteryResultFunPrefixArr = ['','','','interact_template','interact_template','interact_template']
+const browseTimeArr = ['','','','15','','10']
 let merge = {}
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
