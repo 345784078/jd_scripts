@@ -100,8 +100,8 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
         $.log(`自己的下一账号${decodeURIComponent(cookiesArr[(i + 1) % $.newShareCodes.length].match(/pt_pin=(.+?);/) && cookiesArr[(i + 1) % $.newShareCodes.length].match(/pt_pin=(.+?);/)[1])}，助力码为 ${code}`)
         await createAssistUser(code, $.createAssistUserID);
       }
-      console.log(`\n去帮助作者:lxk0301\n`)
-      await helpFriends();
+      //console.log(`\n去帮助作者:lxk0301\n`)
+      //await helpFriends();
     }
   }
 })()
@@ -114,7 +114,7 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
 async function smallHome() {
   await loginHome();
   await ssjjRooms();
-  // await helpFriends();
+  await helpFriends();
   if (!$.isUnLock) return;
   await createInviteUser();
   await queryDraw();
