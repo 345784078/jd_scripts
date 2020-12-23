@@ -1,3 +1,6 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
 name: jd_crazy
 
 on:
@@ -9,20 +12,31 @@ on:
   repository_dispatch:
     types: jd_crazy
 jobs:
-  run:
+  build:
+
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
         with:
-          python-version: 3.7
-      - name: '运行jd_crazy'
+          repository: 345784078/jd_scripts
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node_modules
+        uses: actions/cache@v2 # 使用 GitHub 官方的缓存 Action。
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
+      - name: npm install
         run: |
-          pip3 install requests
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jd_crazy.py -o jd_crazy.py
-          python3 jd_crazy.py
+          npm install
+      - name: '运行 疯狂joy'
+        run: |
+          node jd_crazy.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
