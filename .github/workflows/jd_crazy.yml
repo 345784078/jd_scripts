@@ -1,0 +1,28 @@
+name: jd_crazy
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+  watch:
+    types: started
+  repository_dispatch:
+    types: jd_crazy
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: '运行jd_crazy'
+        run: |
+          pip3 install requests
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jd_crazy.py -o jd_crazy.py
+          python3 jd_crazy.py
+        env:
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
