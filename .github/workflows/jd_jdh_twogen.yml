@@ -6,7 +6,7 @@ name: jd_jdh_twogen
 on:
   workflow_dispatch:
   schedule:
-    - cron: '14 17 * * *'
+    - cron: '14 0 * * *'
   watch:
     types: started
   repository_dispatch:
