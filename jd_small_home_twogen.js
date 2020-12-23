@@ -92,14 +92,16 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
+      $.token = $.newShareCodes[i].token;
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
       if ($.newShareCodes.length > 1) {
-        let code = $.newShareCodes[(i + 1) % $.newShareCodes.length]
+        let code = $.newShareCodes[(i + 1) % $.newShareCodes.length]['code']
         console.log(`\n${$.UserName}去给自己的下一账号${decodeURIComponent(cookiesArr[(i + 1) % $.newShareCodes.length].match(/pt_pin=(.+?);/) && cookiesArr[(i + 1) % $.newShareCodes.length].match(/pt_pin=(.+?);/)[1])}助力\n`)
-        await createAssistUser(code, $.createAssistUserID || "1318106976846299138");
+        $.log(`自己的下一账号${decodeURIComponent(cookiesArr[(i + 1) % $.newShareCodes.length].match(/pt_pin=(.+?);/) && cookiesArr[(i + 1) % $.newShareCodes.length].match(/pt_pin=(.+?);/)[1])}，助力码为 ${code}`)
+        await createAssistUser(code, $.createAssistUserID);
       }
-      //console.log(`\n去帮助作者:lxk0301\n`)
-      //await helpFriends();
+      console.log(`\n去帮助作者:lxk0301\n`)
+      await helpFriends();
     }
   }
 })()
@@ -112,7 +114,7 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
 async function smallHome() {
   await loginHome();
   await ssjjRooms();
-  await helpFriends();
+  // await helpFriends();
   if (!$.isUnLock) return;
   await createInviteUser();
   await queryDraw();
@@ -153,7 +155,7 @@ async function helpFriends() {
   if (!$.inviteCodes) await updateInviteCodeCDN('https://gitee.com/twogenchen/updateTeam/raw/master/jd_updateSmallHomeInviteCode.json');
   for (let item of $.inviteCodes.inviteCode) {
     if (!item) continue
-    await createAssistUser(item, $.createAssistUserID || "1318106976846299138");
+    await createAssistUser(item, $.createAssistUserID);
   }
 }
 async function doAllTask() {
@@ -165,8 +167,8 @@ async function doAllTask() {
   for (let item of $.taskList) {
     if (item.ssjjTaskInfo.type === 1) {
       //邀请好友助力自己
-      // await createAssistUser('1330186694770339842', item.ssjjTaskInfo.id)
       $.createAssistUserID = item.ssjjTaskInfo.id;
+      console.log(`createAssistUserID:${item.ssjjTaskInfo.id}`)
       console.log(`\n\n助力您的好友:${item.doneNum}人`)
     }
     if (item.ssjjTaskInfo.type === 2) {
@@ -504,7 +506,7 @@ function createInviteUser() {
                 if (data.body.id) {
                   console.log(`\n您的${$.name}shareCode(每天都是变化的):【${data.body.id}】\n`);
                   $.shareCode = data.body.id;
-                  $.newShareCodes.push(data.body.id);
+                  $.newShareCodes.push({ 'code': data.body.id, 'token': $.token });
                 }
               }
             }
@@ -520,6 +522,7 @@ function createInviteUser() {
 }
 
 function createAssistUser(inviteId, taskId) {
+  console.log(`${inviteId}, ${taskId}`, `${cookie}`);
   return new Promise(resolve => {
     $.get(taskUrl(`/ssjj-task-record/createAssistUser/${inviteId}/${taskId}`), (err, resp, data) => {
       try {
