@@ -31,8 +31,8 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 let cookiesArr = [], cookie = '', message = '';
 const inviteCodes = [
-  'vbb8XxgMpbk=@0gUO7F7N-4HVDh9mdQC2hg==@fUJTgR9z26fXdQgTvt_bgqt9zd5YaBeE',
-  'vbb8XxgMpbk=@0gUO7F7N-4HVDh9mdQC2hg==@fUJTgR9z26fXdQgTvt_bgqt9zd5YaBeE'
+  'vbb8XxgMpbk=@NSIUXqSKifo=@b0Ml6s5o0N-1NY3aPUgU7qt9zd5YaBeE',
+  'vbb8XxgMpbk=@NSIUXqSKifo=@b0Ml6s5o0N-1NY3aPUgU7qt9zd5YaBeE'
 ];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 if ($.isNode()) {
