@@ -58,6 +58,7 @@ if ($.isNode()) {
   cookiesArr.reverse();
   cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
   cookiesArr.reverse();
+  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
 }
 $.newShareCodes = [];
 const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
@@ -82,8 +83,6 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        } else {
-          $.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
         }
         continue
       }
@@ -101,8 +100,8 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
         console.log(`\n${$.UserName} 去给自己的下一账号 ${decodeURIComponent($.newShareCodes[(i + 1) % $.newShareCodes.length]['cookie'].match(/pt_pin=(.+?);/) && $.newShareCodes[(i + 1) % $.newShareCodes.length]['cookie'].match(/pt_pin=(.+?);/)[1])}助力，助力码为 ${code}\n`)
         await createAssistUser(code, $.createAssistUserID);
       }
-      //console.log(`\n去帮助作者:lxk0301\n`)
-      //await helpFriends();
+      console.log(`\n去帮助作者:lxk0301\n`)
+      await helpFriends();
     }
   }
 })()
@@ -115,7 +114,7 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
 async function smallHome() {
   await loginHome();
   await ssjjRooms();
-  await helpFriends();
+  // await helpFriends();
   if (!$.isUnLock) return;
   await createInviteUser();
   await queryDraw();
@@ -152,7 +151,6 @@ async function doChannelsListTask(taskId, taskType) {
 async function helpFriends() {
   await updateInviteCode();
   if (!$.inviteCodes) await updateInviteCodeCDN();
-  //if (!$.inviteCodes) await updateInviteCodeCDN('https://gitee.com/lxk0301/updateTeam/raw/master/jd_updateSmallHomeInviteCode.json');
   if (!$.inviteCodes) await updateInviteCodeCDN('https://gitee.com/twogenchen/updateTeam/raw/master/jd_updateSmallHomeInviteCode.json');
   for (let item of $.inviteCodes.inviteCode) {
     if (!item) continue
@@ -786,7 +784,7 @@ function login(userName) {
     })
   })
 }
-function updateInviteCode(url = 'ttps://raw.githubusercontent.com/345784078/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
+function updateInviteCode(url = 'https://raw.githubusercontent.com/345784078/updateTeam/master/jd_updateSmallHomeInviteCode.json') {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
