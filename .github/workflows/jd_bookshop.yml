@@ -40,3 +40,4 @@ jobs:
           node jd_bookshop.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          BOOKSHOP_SHARECODES: ${{ secrets.BOOKSHOP_SHARECODES }}
