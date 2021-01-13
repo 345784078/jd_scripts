@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: jd_bookshop
+name: jd_bookshop_twogen
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: jd_bookshop
+    types: jd_bookshop_twogen
 jobs:
   build:
 
@@ -37,7 +37,7 @@ jobs:
           npm install
       - name: '运行 口袋书店'
         run: |
-          node jd_bookshop.js
+          node jd_bookshop_twogen.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           BOOKSHOP_SHARECODES: ${{ secrets.BOOKSHOP_SHARECODES }}
