@@ -16,7 +16,7 @@ if ($.isNode()) {
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {
   };
-  if(JSON.stringify(process.env).indexOf('GITHUB')>-1) process.exit(0)
+  //if(JSON.stringify(process.env).indexOf('GITHUB')>-1) process.exit(0)
   const mysql = require('mysql');
   connection = mysql.createConnection({
     host: '127.0.0.1',
