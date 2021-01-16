@@ -6,7 +6,7 @@ name:  jd_bj
 on:
   workflow_dispatch:
   schedule:
-    - cron: '1 8,9 14-31/1 1 *'
+    - cron: '31 19,20 14-31/1 1 *'
   watch:
     types: started
   repository_dispatch:
