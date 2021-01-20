@@ -31,8 +31,8 @@ const $ = new Env('工业品爱消除');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let inviteCodes = [
-  '684383@1801780@2751843@2752006@2752194',
-  '684383@1801780@2751843@2752006@2752194',
+  '684383@1801780@2751843@2752006@2752194@948255@2786196@822729@2799584',
+  '684383@1801780@2751843@2752006@2752194@948255@2786196@822729@2799584',
 ]
 const ACT_ID = 'A_112790_R_4_D_20201209'
 let exchangeName = $.isNode() ? (process.env.EXCHANGE_GYEC ? process.env.EXCHANGE_GYEC : '1888京豆') : ($.getdata('JDGYEC') ? $.getdata('JDGYEC') : '1888京豆')
