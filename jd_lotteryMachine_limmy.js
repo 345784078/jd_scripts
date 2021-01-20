@@ -1,7 +1,7 @@
 /*
 京东抽奖机
-更新时间：2021-01-05 14:58
-脚本说明：抽奖活动，【新店福利】【闪购盲盒】【疯狂砸金蛋】【健康服务】【东东福利屋】【东东焕新家】，点通知只能跳转一个，入口在京东APP玩一玩里面可以看到
+更新时间：2021-01-20 06:13
+脚本说明：抽奖活动，【新店福利】【闪购盲盒】【疯狂砸金蛋】【健康服务】【东东福利屋】【东东焕新家】【OPPO】，点通知只能跳转一个，入口在京东APP玩一玩里面可以看到
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 // quantumultx
 [task_local]
@@ -19,12 +19,12 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const STRSPLIT = "|";
 const needSum = false;            //是否需要显示汇总
 const printDetail = false;        //是否显示出参详情
-const appIdArr = ['1EFRRxA','1EFRQwA','1EFRTwg','1EFRTyg','1EFRSxA','1EFRSyw']
-const shareCodeArr = ['T0104qQuGR0f9gCjVWmIaW5kRrbA','T0104qQuGR0f9gCjVXnIaW5kRrbA','T0104qQuGR0f9gCjVUnoaW5kRrbA','T0104qQuGR0f9gCjVUloaW5kRrbA','T0104qQuGR0f9gCjVVmIaW5kRrbA','T0104qQuGR0f9gCjVVl4aW5kRrbA']
-const homeDataFunPrefixArr = ['','','healthyDay','healthyDay','wfh','healthyDay']
-const collectScoreFunPrefixArr = ['','','','','wfh','']
-const lotteryResultFunPrefixArr = ['','','interact_template','interact_template','','interact_template']
-const browseTimeArr = ['','','15','','','']
+const appIdArr = ['1EFRRxA','1EFRQwA','1EFRTyg','1EFRSxA','1EFRSyw','1EFRVxA','1EFRUwg','1EFRVyg','1EFRUww','1EFRVxg']
+const shareCodeArr = ['T0104qQuGR0f9gCjVWmIaW5kRrbA','T0104qQuGR0f9gCjVXnIaW5kRrbA','T0104qQuGR0f9gCjVUloaW5kRrbA','T0104qQuGR0f9gCjVVmIaW5kRrbA','T0104qQuGR0f9gCjVVl4aW5kRrbA','T0104qQuGR0f9gCjVSmIaW5kRrbA','T0104qQuGR0f9gCjVTnoaW5kRrbA','T0104qQuGR0f9gCjVSloaW5kRrbA','T0104qQuGR0f9gCjVTn4aW5kRrbA','T0104qQuGR0f9gCjVSmoaW5kRrbA']
+const homeDataFunPrefixArr = ['','','healthyDay','wfh','healthyDay','healthyDay','healthyDay','healthyDay','healthyDay']
+const collectScoreFunPrefixArr = ['','','','wfh','','','','','']
+const lotteryResultFunPrefixArr = ['','','interact_template','','interact_template','interact_template','interact_template','interact_template','interact_template']
+const browseTimeArr = ['','','','','','10','10','10','15','']
 let merge = {}
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
