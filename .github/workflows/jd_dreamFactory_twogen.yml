@@ -37,7 +37,7 @@ jobs:
           npm install
       - name: '运行 京喜工厂'
         run: |
-          node jd_dreamFactory_twogen.js
+          node jd_dreamFactory.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           DREAM_FACTORY_SHARE_CODES: ${{ secrets.DREAM_FACTORY_SHARE_CODES }}
