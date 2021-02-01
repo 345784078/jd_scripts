@@ -24,8 +24,8 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '';
 const randomCount = $.isNode() ? 2 : 2;
 const inviteCodes = [
-    `vtVuDLMW7McbA659e7F2_vgAHf0eJzqxEhs@pstsAuVOo8cbT-J9e_xx-R6hfrWeqmYHTqTJ`,
-    `vtVuDLMW7McbA659e7F2_vgAHf0eJzqxEhs@pstsAuVOo8cbT-J9e_xx-R6hfrWeqmYHTqTJ`,
+    `vtVuDLMW7McbA659e7F2_vgAHf0eJzqxEhs@pstsAuVOo8cbT-J9e_xx-R6hfrWeqmYHTqTJ@oMZeXrRNpYxeC7NnMrh3_KAtO53ZXpbAeOXDR_3VhX3t19Gn@oMZeXuFI8o8DBuQ4NbMl_U33JQzrqnMPzPPpVX4onJy5rYVL`,
+    `vtVuDLMW7McbA659e7F2_vgAHf0eJzqxEhs@pstsAuVOo8cbT-J9e_xx-R6hfrWeqmYHTqTJ@oMZeXrRNpYxeC7NnMrh3_KAtO53ZXpbAeOXDR_3VhX3t19Gn@oMZeXuFI8o8DBuQ4NbMl_U33JQzrqnMPzPPpVX4onJy5rYVL`,
 ]
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
